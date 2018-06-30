@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 
 import 'home.dart';
 import 'login.dart';
+import 'res/themes.dart';
 
 class ShrineApp extends StatelessWidget {
   @override
@@ -25,6 +26,7 @@ class ShrineApp extends StatelessWidget {
       home: HomePage(),
       initialRoute: '/login',
       onGenerateRoute: _getRoute,
+      theme: shrineTheme(),
     );
   }
 

@@ -14,6 +14,9 @@
 
 import 'package:flutter/material.dart';
 
+import 'res/colors.dart';
+import 'res/widgets/PrimaryColorOverride.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -44,20 +47,24 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 100.0),
-              TextField(
-                decoration:
-                    InputDecoration(filled: true, labelText: 'Username'),
-                keyboardType: TextInputType.emailAddress,
-                key: Key('uname'),
-                controller: _userNameController,
+              PrimaryColorOverride(
+                color: kShrineBrown900,
+                child: TextField(
+                  decoration: InputDecoration(labelText: 'Username'),
+                  keyboardType: TextInputType.emailAddress,
+                  key: Key('uname'),
+                  controller: _userNameController,
+                ),
               ),
               SizedBox(height: 10.0),
-              TextField(
-                decoration:
-                    InputDecoration(filled: true, labelText: 'Password'),
-                obscureText: true,
-                key: Key('passwd'),
-                controller: _passwordController,
+              PrimaryColorOverride(
+                color: kShrineBrown900,
+                child: TextField(
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  key: Key('passwd'),
+                  controller: _passwordController,
+                ),
               ),
               ButtonBar(
                 alignment: MainAxisAlignment.end,
@@ -65,12 +72,18 @@ class _LoginPageState extends State<LoginPage> {
                   FlatButton(
                     child: Text('CANCEL'),
                     onPressed: clear,
+                    shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7.0))),
                   ),
                   RaisedButton(
+                      elevation: 8.0,
                       child: Text('NEXT'),
                       onPressed: () {
                         Navigator.pop(context);
-                      })
+                      },
+                      shape: BeveledRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(7.0)))),
                 ],
               )
             ]),

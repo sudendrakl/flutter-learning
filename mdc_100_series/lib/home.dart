@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 
 import 'model/data.dart';
 import 'model/product.dart';
+import 'supplemental/asymmetric_view.dart';
 
 class HomePage extends StatelessWidget {
   ScrollController _scrollController = ScrollController();
@@ -25,44 +26,47 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print('Search Button');
-              _scrollController.animateTo(
-                  _scrollController.position.maxScrollExtent,
-                  duration: Duration(seconds: _scrollDuration),
-                  curve: Curves.linear);
-              print ('going bottom');
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.add_alert),
-            onPressed: () {
-              print('Alarm Button');
-              _scrollController.animateTo(
-                  _scrollController.position.minScrollExtent,
-                  duration: Duration(seconds: _scrollDuration),
-                  curve: Curves.linear);
-              print('going top');
-            },
-          )
-        ],
-        leading: Icon(Icons.menu),
-        title: Text('SHRINE'),
-        centerTitle: true,
-        elevation: 6.0,
-      ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
-        children: _buildGridCards(context, 0), //_multiply(context)
-        controller: _scrollController,
-      ),
-    );
+        appBar: AppBar(
+          brightness: Brightness.light,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                print('Search Button');
+                _scrollController.animateTo(
+                    _scrollController.position.maxScrollExtent,
+                    duration: Duration(seconds: _scrollDuration),
+                    curve: Curves.linear);
+                print('going bottom');
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.add_alert),
+              onPressed: () {
+                print('Alarm Button');
+                _scrollController.animateTo(
+                    _scrollController.position.minScrollExtent,
+                    duration: Duration(seconds: _scrollDuration),
+                    curve: Curves.linear);
+                print('going top');
+              },
+            )
+          ],
+          leading: Icon(Icons.menu),
+          title: Text('SHRINE'),
+          centerTitle: true,
+          elevation: 6.0,
+        ),
+        body: AsymmetricView(products: getProducts(Category.all))
+//      body: GridView.count(
+//        crossAxisCount: 2,
+//        padding: EdgeInsets.all(16.0),
+//        childAspectRatio: 8.0 / 9.0,
+//        children: _buildGridCards(context, 0),
+//        //_multiply(context)
+//        controller: _scrollController,
+//      ),
+        );
   }
 
   List<Card> _multiply(BuildContext context) {
@@ -86,8 +90,9 @@ class HomePage extends StatelessWidget {
 
     List<Card> cards = products.map((product) {
       return Card(
+        elevation: 0.0,
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               AspectRatio(
                   aspectRatio: 18.0 / 9.0,
@@ -110,24 +115,24 @@ class HomePage extends StatelessWidget {
                     ],
                     fit: StackFit.passthrough,
                   )),
-              Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      product.name,
-                      style: themeData.textTheme.title,
-                      maxLines: 1,
-                    ),
-                    SizedBox(height: 8.0),
-                    Text(
-                      format.format(product.price),
-                      style: themeData.textTheme.body2,
-                    )
-                  ],
-                ),
-              )
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    product == null ? '' : product.name,
+                    style: themeData.textTheme.button,
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    product == null ? '' : format.format(product.price),
+                    style: themeData.textTheme.caption,
+                  )
+                ],
+              ),
             ]),
       );
     }).toList();
