@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
         crossAxisCount: 2,
         padding: EdgeInsets.all(16.0),
         childAspectRatio: 8.0 / 9.0,
-        children: _multiply(context), //_buildGridCards(context),
+        children: _buildGridCards(context, 0), //_multiply(context)
         controller: _scrollController,
       ),
     );
