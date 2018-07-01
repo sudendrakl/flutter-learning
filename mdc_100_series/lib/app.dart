@@ -14,20 +14,17 @@
 
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'home-backdrop.dart';
 import 'login.dart';
+import 'model/product.dart';
 import 'res/themes.dart';
+import 'res/widgets/backdrop/backdrop.dart';
+import 'res/widgets/category_menu_page.dart';
 
-class ShrineApp extends StatelessWidget {
+class ShrineApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shrine',
-      home: HomePage(),
-      initialRoute: '/login',
-      onGenerateRoute: _getRoute,
-      theme: shrineTheme(),
-    );
+  _ShrineAppState createState() {
+    return _ShrineAppState();
   }
 
   Route<dynamic> _getRoute(RouteSettings settings) {
@@ -39,6 +36,38 @@ class ShrineApp extends StatelessWidget {
       settings: settings,
       builder: (BuildContext context) => LoginPage(),
       fullscreenDialog: true,
+    );
+  }
+}
+
+class _ShrineAppState extends State<ShrineApp> {
+  Category _currentCategory = Category.all;
+
+  void _onCategoryTap(Category category) {
+    setState(() => _currentCategory = category);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Shrine',
+      //home: HomePage(),
+      home: BackDrop(
+          //todo: change home: to a backdrop with a HomePage frontLayer
+          currentCategory: Category.all,
+          //todo: make currentCategory take _currentCategory
+          frontLayer: HomePageBackDrop(category: _currentCategory),
+          //todo: pass _currentCategory for frontLayer
+          backLayer: CategoryMenuPage(
+            currentCategory: _currentCategory,
+            onCategoryTap: _onCategoryTap,
+          ),
+          //todo: change backLayer field value to CategoryMenuPage
+          frontTitle: Text('SHRINE'),
+          backTitle: Text('MENU')),
+      initialRoute: '/login',
+      onGenerateRoute: widget._getRoute,
+      theme: shrineTheme(),
     );
   }
 }
